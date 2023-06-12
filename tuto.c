@@ -193,6 +193,13 @@ void test3()
 
 //**********************************************************************
 
+typedef struct S_mailmat { //besoin de nommer la structure afin de creer *vmat
+  double* ptxval;
+  int icol;
+  int jlig;
+  struct S_mailmat *vmat; //pointeur sur l'element suivant sur la meme ligne
+}mailmat;
+
 int main()
 {
 
