@@ -200,15 +200,38 @@ typedef struct S_mailmat { //besoin de nommer la structure afin de creer *vmat
   struct S_mailmat *vmat; //pointeur sur l'element suivant sur la meme ligne
 }mailmat;
 
+typedef struct {
+  int nblig;
+  int nbcol;
+  mailmat **m_matcreux; //m_matcreux[i] = ptr 1er elem ieme ligne
+}matrice;
+
+void add_mail(matrice mat, mailmat mail)
+{
+	int i;
+}
+
+void affiche_mat_pleine(matrice mat)
+{
+
+}
+
 void test4()
 {
-  printf("\nTest4 (matrice) ---------------------------\n");
+  int i;
   mailmat* mail1 = (mailmat*)malloc(sizeof(mailmat));
-  double* val = (double*)malloc(sizeof(double));
+  double* val = (double*)malloc(sizeof(double)+1); //indices commencent a 1
+  printf("\nTest4 (matrice) ---------------------------\n");
   *val = 2.46;
   mail1->ptxval = val;
   mail1->jlig = 2;
   mail1->icol = 3;
+  
+  matrice *mat1 = (matrice*)malloc(sizeof(matrice));
+  mat1->nblig = 3;
+  for (i=1; i<=mat1->nblig; i++)
+    mat1->m_matcreux[i] = NULL;
+  
 }
 
 int main()
