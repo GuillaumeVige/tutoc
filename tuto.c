@@ -127,7 +127,7 @@ void print_tempsource(const ty_tempsource* src)
   }
 }
 
-void test2_3()
+void test2()
 {
   ty_tempsource* ts1 = (ty_tempsource*)malloc(sizeof(ty_tempsource));
   ts1->name = (char*)malloc(sizeof(char) * (10 + 1));
@@ -165,9 +165,9 @@ void test2_3()
   free(ts1);
 }
 
-void test4()
+void test3()
 {
-  printf("\nTest4 (copie par fonction retournant une structure) ---------------\n");
+  printf("\nTest3(copie par fonction retournant une structure) ---------------\n");
   ty_tempsource* ts1 = (ty_tempsource*)malloc(sizeof(ty_tempsource));
   ts1->name = (char*)malloc(sizeof(char) * (10 + 1));
   strcpy(ts1->name, "source1");
@@ -197,13 +197,13 @@ int main()
 {
 
   test1();
-  printf("\nTest2 (duplication d'une structure contenant un pointeur) ---------------------------\n");
+  printf("\nTest2a (duplication d'une structure contenant un pointeur) ---------------------------\n");
   use_memcpy = 0;
-  test2_3();
-  printf("\nTest3 (duplication d'une structure contenant un pointeur avec memcpy) ---------------\n");
+  test2();
+  printf("\nTest2b (duplication d'une structure contenant un pointeur avec memcpy) ---------------\n");
   use_memcpy = 1;
-  test2_3();
-  test4();
+  test2();
+  test3();
   return 0;
 }
 
