@@ -200,6 +200,17 @@ typedef struct S_mailmat { //besoin de nommer la structure afin de creer *vmat
   struct S_mailmat *vmat; //pointeur sur l'element suivant sur la meme ligne
 }mailmat;
 
+void test4()
+{
+  printf("\nTest4 (matrice) ---------------------------\n");
+  mailmat* mail1 = (mailmat*)malloc(sizeof(mailmat));
+  double* val = (double*)malloc(sizeof(double));
+  *val = 2.46;
+  mail1->ptxval = val;
+  mail1->jlig = 2;
+  mail1->icol = 3;
+}
+
 int main()
 {
 
@@ -211,6 +222,7 @@ int main()
   use_memcpy = 1;
   test2();
   test3();
+  test4();
   return 0;
 }
 
