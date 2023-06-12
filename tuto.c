@@ -206,9 +206,12 @@ typedef struct {
   mailmat **m_matcreux; //m_matcreux[i] = ptr 1er elem ieme ligne
 }matrice;
 
-void add_mail(matrice mat, mailmat mail)
+void add_elem(matrice mat, double val, int ilig, int icol)
 {
-	int i;
+/*	int i = mail.jlig;
+	int j = 0;
+	while (j<
+	mat->m_matcreux[i]*/
 }
 
 void affiche_mat_pleine(matrice mat)
@@ -229,8 +232,10 @@ void test4()
   
   matrice *mat1 = (matrice*)malloc(sizeof(matrice));
   mat1->nblig = 3;
-  for (i=1; i<=mat1->nblig; i++)
+  mat1->m_matcreux[0] = NULL;
+  for (i=1; i<=mat1->nblig; i++) {
     mat1->m_matcreux[i] = NULL;
+  }
   
 }
 
