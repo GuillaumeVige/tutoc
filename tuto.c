@@ -206,37 +206,91 @@ typedef struct {
   mailmat **m_matcreux; //m_matcreux[i] = ptr 1er elem ieme ligne
 }matrice;
 
-void add_elem(matrice mat, double val, int ilig, int icol)
+void add_elem(matrice *mat, double val, int ilig, int icol)
 {
-/*	int i = mail.jlig;
-	int j = 0;
-	while (j<
-	mat->m_matcreux[i]*/
+  mailmat *mamat, *preclig;
+  mailmat *mail1;
+  preclig = NULL;
+  mamat = mat->m_matcreux[ilig]; /* get the first cell in the row */
+  while (mamat != NULL && mamat->icol<=icol)
+  {
+    if (mamat->icol == icol) //la maille existe deja
+    {
+  	*(mamat->ptxval) = val;
+  	return;
+    }
+    preclig = mamat; //le terme precedent mamat sur la meme ligne
+    mamat = mamat->vmat; /* move to the next cell on the row */
+  }
+    printf("ok12.0\n");
+
+  //la maille n'existe pas => on la cree
+  mail1 = (mailmat*)malloc(sizeof(mailmat));
+      printf("ok12.2\n");
+
+  double *val1 = (double*)malloc(sizeof(double));
+  *val1 = val;
+    printf("ok12.5\n");
+  mail1->ptxval = val1;
+  mail1->jlig = ilig;
+  mail1->icol = icol;
+    printf("ok13\n");
+
+  if (mat->m_matcreux[ilig] == NULL) //premier element de la ligne
+  {
+	    printf("ok14");
+
+     mail1->vmat = NULL;
+     mat->m_matcreux[ilig] = mail1;
+	   printf("ok15");
+
+  }
+  else 
+  {
+    preclig->vmat = mail1; //on met la maille a la suite de la ligne
+    if (mamat !=0 ) //il y a des termes apres le terme courant sur la meme ligne
+    {
+      mail1->vmat = mamat; //on ajoute le reste des termes de la ligne
+    }
+  }
 }
 
-void affiche_mat_pleine(matrice mat)
+void affiche_mat(matrice *mat)
 {
-
+  int i;
+  mailmat *mamat;
+  for (i=1; i<=mat->nblig; i++) 
+  {
+    mamat = mat->m_matcreux[i]; //1er element de la ligne
+    while (mamat != NULL) //on parcourt la ligne
+    {
+       printf("%5i %5i %8.3e\n",mamat->jlig, mamat->icol, *(mamat->ptxval));
+       mamat = mamat->vmat;
+    }
+  }
 }
 
 void test4()
 {
   int i;
-  mailmat* mail1 = (mailmat*)malloc(sizeof(mailmat));
-  double* val = (double*)malloc(sizeof(double)+1); //indices commencent a 1
   printf("\nTest4 (matrice) ---------------------------\n");
-  *val = 2.46;
-  mail1->ptxval = val;
-  mail1->jlig = 2;
-  mail1->icol = 3;
+
   
   matrice *mat1 = (matrice*)malloc(sizeof(matrice));
+  mat1->m_matcreux = (mailmat**)malloc(sizeof(mailmat*));
   mat1->nblig = 3;
-  mat1->m_matcreux[0] = NULL;
-  for (i=1; i<=mat1->nblig; i++) {
+  mat1->nbcol = 3;
+  for (i=0; i<=mat1->nblig; i++) {
     mat1->m_matcreux[i] = NULL;
   }
-  
+  printf("ok10\n");
+  add_elem(mat1, 2.3, 2, 3);
+  printf("ok20");
+  add_elem(mat1, -1.5, 1, 3);
+  printf("ok30");
+  affiche_mat(mat1);
+    printf("ok40");
+
 }
 
 int main()
@@ -251,6 +305,7 @@ int main()
   test2();
   test3();
   test4();
+  printf("fin\n");
   return 0;
 }
 
