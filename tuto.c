@@ -206,7 +206,27 @@ typedef struct {
   mailmat **m_matcreux; //m_matcreux[i] = ptr 1er elem ieme ligne
 }matrice;
 
-void add_elem(matrice *mat, double val, int ilig, int icol)
+matrice *init_matrice(int nblig, int nbcol)
+{
+  int i;
+  matrice *mat1 = (matrice*)malloc(sizeof(matrice));
+  mat1->m_matcreux = (mailmat**)malloc((nblig+1)*sizeof(mailmat*));
+  
+  if (mat1 == NULL || mat1->m_matcreux == NULL)
+  {
+    exit(EXIT_FAILURE);
+  }
+  
+  mat1->nblig = nblig;
+  mat1->nbcol = nbcol;
+  
+  for (i=0; i<=mat1->nblig; i++) {
+	mat1->m_matcreux[i] = NULL;
+  }
+  return mat1;
+}
+
+void add_elem(matrice *mat, int ilig, int icol, double val)
 {
   mailmat *mamat, *preclig;
   mailmat *mail1;
@@ -222,28 +242,19 @@ void add_elem(matrice *mat, double val, int ilig, int icol)
     preclig = mamat; //le terme precedent mamat sur la meme ligne
     mamat = mamat->vmat; /* move to the next cell on the row */
   }
-    printf("ok12.0\n");
-
   //la maille n'existe pas => on la cree
   mail1 = (mailmat*)malloc(sizeof(mailmat));
-      printf("ok12.2\n");
 
   double *val1 = (double*)malloc(sizeof(double));
   *val1 = val;
-    printf("ok12.5\n");
   mail1->ptxval = val1;
   mail1->jlig = ilig;
   mail1->icol = icol;
-    printf("ok13\n");
 
   if (mat->m_matcreux[ilig] == NULL) //premier element de la ligne
   {
-	    printf("ok14");
-
-     mail1->vmat = NULL;
-     mat->m_matcreux[ilig] = mail1;
-	   printf("ok15");
-
+    mail1->vmat = NULL;
+    mat->m_matcreux[ilig] = mail1;
   }
   else 
   {
@@ -264,7 +275,7 @@ void affiche_mat(matrice *mat)
     mamat = mat->m_matcreux[i]; //1er element de la ligne
     while (mamat != NULL) //on parcourt la ligne
     {
-       printf("%5i %5i %8.3e\n",mamat->jlig, mamat->icol, *(mamat->ptxval));
+       printf("%5i %5i "   " % 8.3e\n",mamat->jlig, mamat->icol, *(mamat->ptxval));
        mamat = mamat->vmat;
     }
   }
@@ -272,24 +283,14 @@ void affiche_mat(matrice *mat)
 
 void test4()
 {
-  int i;
   printf("\nTest4 (matrice) ---------------------------\n");
-
   
-  matrice *mat1 = (matrice*)malloc(sizeof(matrice));
-  mat1->m_matcreux = (mailmat**)malloc(sizeof(mailmat*));
-  mat1->nblig = 3;
-  mat1->nbcol = 3;
-  for (i=0; i<=mat1->nblig; i++) {
-    mat1->m_matcreux[i] = NULL;
-  }
-  printf("ok10\n");
-  add_elem(mat1, 2.3, 2, 3);
-  printf("ok20");
-  add_elem(mat1, -1.5, 1, 3);
-  printf("ok30");
+  matrice *mat1 = init_matrice(3,3);
   affiche_mat(mat1);
-    printf("ok40");
+  add_elem(mat1, 2, 3, 2.3);
+  add_elem(mat1, 1, 3, -1.5);
+  add_elem(mat1, 2, 3, 6.5);
+  affiche_mat(mat1);
 
 }
 
