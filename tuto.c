@@ -291,6 +291,8 @@ void test4()
   add_elem(mat1, 1, 3, -1.5);
   add_elem(mat1, 2, 3, 6.5);
   affiche_mat(mat1);
+  
+  cracra
 
 }
 
