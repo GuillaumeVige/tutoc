@@ -232,6 +232,7 @@ void add_elem(matrice *mat, int ilig, int icol, double val)
   mailmat *mail1;
   preclig = NULL;
   mamat = mat->m_matcreux[ilig]; /* get the first cell in the row */
+  printf("%3i %3i %p\n",ilig,icol,mamat);
   while (mamat != NULL && mamat->icol<=icol)
   {
     if (mamat->icol == icol) //la maille existe deja
@@ -242,6 +243,7 @@ void add_elem(matrice *mat, int ilig, int icol, double val)
     preclig = mamat; //le terme precedent mamat sur la meme ligne
     mamat = mamat->vmat; /* move to the next cell on the row */
   }
+  printf("nouvel elem\n");
   //la maille n'existe pas => on la cree
   mail1 = (mailmat*)malloc(sizeof(mailmat));
 
@@ -250,6 +252,7 @@ void add_elem(matrice *mat, int ilig, int icol, double val)
   mail1->ptxval = val1;
   mail1->jlig = ilig;
   mail1->icol = icol;
+  printf("elem cree\n");
 
   if (mat->m_matcreux[ilig] == NULL) //premier element de la ligne
   {
