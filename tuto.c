@@ -285,6 +285,141 @@ void test4()
 
 //**********************************************************************
 
+typedef struct S_mailmat { //besoin de nommer la structure afin de creer *vmat
+  double* ptxval;
+  int icol;
+  int jlig;
+  struct S_mailmat *vmat; //pointeur sur l'element suivant sur la meme ligne
+}mailmat;
+
+typedef struct {
+  int nblig;
+  int nbcol;
+  mailmat **m_matcreux; //m_matcreux[i] = ptr 1er elem ieme ligne
+}matrice;
+
+matrice *init_matrice(int nblig, int nbcol)
+{
+  int i;
+  matrice *mat1 = (matrice*)malloc(sizeof(matrice));
+  mat1->m_matcreux = (mailmat**)malloc((nblig+1)*sizeof(mailmat*));
+  
+  if (mat1 == NULL || mat1->m_matcreux == NULL)
+  {
+    exit(EXIT_FAILURE);
+  }
+  
+  mat1->nblig = nblig;
+  mat1->nbcol = nbcol;
+  
+  for (i=0; i<=mat1->nblig; i++) {
+	mat1->m_matcreux[i] = NULL;
+  }
+  return mat1;
+}
+
+void add_elem(matrice *mat, int ilig, int icol, double val)
+{
+  mailmat *mamat, *preclig;
+  mailmat *mail1;
+  preclig = NULL;
+  mamat = mat->m_matcreux[ilig]; /* get the first cell in the row */
+  printf("%3i %3i %p\n",ilig,icol,mamat);
+  while (mamat != NULL && mamat->icol<=icol)
+  {
+    if (mamat->icol == icol) //la maille existe deja
+    {
+  	  *(mamat->ptxval) = val;
+  	  return;
+    }
+    preclig = mamat; //le terme precedent mamat sur la meme ligne
+    mamat = mamat->vmat; /* move to the next cell on the row */
+  }
+  printf("nouvel elem\n");
+  //la maille n'existe pas => on la cree
+  mail1 = (mailmat*)malloc(sizeof(mailmat));
+
+  double *val1 = (double*)malloc(sizeof(double));
+  *val1 = val;
+  mail1->ptxval = val1;
+  mail1->jlig = ilig;
+  mail1->icol = icol;
+  printf("elem cree\n");
+
+  if (mat->m_matcreux[ilig] == NULL) //premier element de la ligne
+  {
+    mail1->vmat = NULL;
+    mat->m_matcreux[ilig] = mail1;
+  }
+  else 
+  {
+    if (mamat !=0 ) //mamat = ptr sur la fin de la ligne
+    {
+      mail1->vmat = mamat; //on raccroche la fin de ligne
+    }
+	if (preclig == NULL) //insertion de la maille en debut de ligne
+	{
+      mat->m_matcreux[ilig] = mail1;
+	}
+	else 
+	{
+      preclig->vmat = mail1; //on met la maille a la suite de la ligne
+	}
+  }
+}
+
+void affiche_mat(matrice *mat)
+{
+  int i;
+  mailmat *mamat;
+  for (i=1; i<=mat->nblig; i++) 
+  {
+    mamat = mat->m_matcreux[i]; //1er element de la ligne
+    while (mamat != NULL) //on parcourt la ligne
+    {
+       printf("%5i %5i "   " % 8.3e\n",mamat->jlig, mamat->icol, *(mamat->ptxval));
+       mamat = mamat->vmat;
+    }
+  }
+}
+
+void free_matrice(matrice *mat)
+{
+  int i;
+  mailmat *mamat;
+  if (mat != NULL) {
+    if (mat->m_matcreux!=NULL) {
+      for (i=0; i<=mat->nblig; i++) {
+        if (mat->m_matcreux!=NULL) {
+          mamat = mat->m_matcreux[i];
+          while (mamat!=NULL) {
+            free(mamat->ptxval);
+            mamat = mamat->vmat;
+          }
+		  free(mat->m_matcreux[i]);
+		}
+      }
+	  free(mat->m_matcreux);
+    }
+	free(mat);
+	mat = NULL;
+  }
+}
+
+void test4()
+{
+  printf("\nTest4 (matrice) ---------------------------\n");
+  
+  matrice *mat1 = init_matrice(3,3);
+  affiche_mat(mat1);
+  add_elem(mat1, 2, 3, 2.3);
+  add_elem(mat1, 1, 3, -1.5);
+  add_elem(mat1, 2, 3, 6.5);
+  add_elem(mat1, 1, 1, -2.9);
+  affiche_mat(mat1);
+  free_matrice(mat1);
+}
+
 int main()
 {
 
