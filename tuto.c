@@ -236,8 +236,8 @@ void add_elem(matrice *mat, int ilig, int icol, double val)
   {
     if (mamat->icol == icol) //la maille existe deja
     {
-  	*(mamat->ptxval) = val;
-  	return;
+  	  *(mamat->ptxval) = val;
+  	  return;
     }
     preclig = mamat; //le terme precedent mamat sur la meme ligne
     mamat = mamat->vmat; /* move to the next cell on the row */
@@ -258,11 +258,18 @@ void add_elem(matrice *mat, int ilig, int icol, double val)
   }
   else 
   {
-    preclig->vmat = mail1; //on met la maille a la suite de la ligne
-    if (mamat !=0 ) //il y a des termes apres le terme courant sur la meme ligne
+    if (mamat !=0 ) //mamat = ptr sur la fin de la ligne
     {
-      mail1->vmat = mamat; //on ajoute le reste des termes de la ligne
+      mail1->vmat = mamat; //on raccroche la fin de ligne
     }
+	if (preclig == NULL) //insertion de la maille en debut de ligne
+	{
+      mat->m_matcreux[ilig] = mail1;
+	}
+	else 
+	{
+      preclig->vmat = mail1; //on met la maille a la suite de la ligne
+	}
   }
 }
 
@@ -281,6 +288,29 @@ void affiche_mat(matrice *mat)
   }
 }
 
+void free_matrice(matrice *mat)
+{
+  int i;
+  mailmat *mamat;
+  if (mat != NULL) {
+    if (mat->m_matcreux!=NULL) {
+      for (i=0; i<=mat->nblig; i++) {
+        if (mat->m_matcreux!=NULL) {
+          mamat = mat->m_matcreux[i];
+          while (mamat!=NULL) {
+            free(mamat->ptxval);
+            mamat = mamat->vmat;
+          }
+		  free(mat->m_matcreux[i]);
+		}
+      }
+	  free(mat->m_matcreux);
+    }
+	free(mat);
+	mat = NULL;
+  }
+}
+
 void test4()
 {
   printf("\nTest4 (matrice) ---------------------------\n");
@@ -290,7 +320,9 @@ void test4()
   add_elem(mat1, 2, 3, 2.3);
   add_elem(mat1, 1, 3, -1.5);
   add_elem(mat1, 2, 3, 6.5);
+  add_elem(mat1, 1, 1, -2.9);
   affiche_mat(mat1);
+  free_matrice(mat1);
 }
 
 int main()
