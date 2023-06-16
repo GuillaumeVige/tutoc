@@ -319,6 +319,7 @@ matrice *init_matrice(int nblig, int nbcol)
 }
 
 void add_elem(matrice *mat, int ilig, int icol, double val)
+//Ajoute un element a la matrice
 {
   mailmat *mamat, *preclig;
   mailmat *mail1;
@@ -406,9 +407,9 @@ void free_matrice(matrice *mat)
   }
 }
 
-void test4()
+void test5()
 {
-  printf("\nTest4 (matrice) ---------------------------\n");
+  printf("\nTest5 (matrice) ---------------------------\n");
   
   matrice *mat1 = init_matrice(3,3);
   affiche_mat(mat1);
@@ -418,6 +419,23 @@ void test4()
   add_elem(mat1, 1, 1, -2.9);
   affiche_mat(mat1);
   free_matrice(mat1);
+}
+
+//**********************************************************************
+
+void change_ptr(int **ptr)
+{
+  *ptr = NULL; 
+}
+
+void test6()
+{
+  printf("\nTest6 (modifier pointeur passe en argument d'une fonction) ---------------------------\n");
+  //pour faire ca il faut declarer un **ptr dans la fonction
+  
+  int* p1 = malloc(sizeof(int));
+  change_ptr(&p1);
+  printf("p1 : %p\n",p1);
 }
 
 int main()
@@ -432,6 +450,8 @@ int main()
   test2();
   test3();
   test4();
+  test5();
+  test6();
   return 0;
 }
 
