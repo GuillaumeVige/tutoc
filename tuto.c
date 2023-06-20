@@ -438,7 +438,22 @@ void test6()
   printf("p1 : %p\n",p1);
 }
 
-//modif bidon pour test git
+//**********************************************************************
+
+void test7()
+{
+  printf("\nTest7 (memoire) --------------------------------------------\n");
+  
+  matrice *mat1 = (matrice*)malloc(sizeof(matrice));
+  printf("Size of matrice = %3d\n",sizeof(matrice));
+  printf("Size of mailmat** = %3d\n",sizeof(mailmat**));
+  //J'initialize à 0 les membres de la classe
+  memset(mat1,0,sizeof(matrice));
+  printf("mat1->nblig = %3d\n",mat1->nblig);
+  printf("mat1->nbcol = %3d\n",mat1->nbcol);
+  printf("mat1->m_matcreux = %p\n",mat1->m_matcreux);
+}
+
 
 int main()
 {
@@ -454,6 +469,7 @@ int main()
   test4();
   test5();
   test6();
+  test7();
   return 0;
 }
 
