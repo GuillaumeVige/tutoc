@@ -439,6 +439,11 @@ void test6()
 }
 
 //**********************************************************************
+struct Person { 
+    int age; 
+    char name[20]; 
+    float height; 
+}; 
 
 void test7()
 {
@@ -447,11 +452,19 @@ void test7()
   matrice *mat1 = (matrice*)malloc(sizeof(matrice));
   printf("Size of matrice = %3d\n",sizeof(matrice));
   printf("Size of mailmat** = %3d\n",sizeof(mailmat**));
-  //J'initialize à 0 les membres de la classe
+  //J'initialize à 0 les membres (numeriques et pointeurs) de la classe 
   memset(mat1,0,sizeof(matrice));
   printf("mat1->nblig = %3d\n",mat1->nblig);
   printf("mat1->nbcol = %3d\n",mat1->nbcol);
   printf("mat1->m_matcreux = %p\n",mat1->m_matcreux);
+  
+
+  struct Person p; 
+  // on peut passer un pointeur sur l'object au lieu de la structure
+  memset(&p, 0, sizeof(p)); 
+  printf("Age: %4i\n",p.age); 
+  printf("Name: %10s\n",p.name); 
+  printf("Height: %8.3e\n",p.height); 
 }
 
 
