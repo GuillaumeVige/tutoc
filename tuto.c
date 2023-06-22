@@ -465,6 +465,20 @@ void test7()
   printf("Age: %4i\n",p.age); 
   printf("Name: %10s\n",p.name); 
   printf("Height: %8.3e\n",p.height); 
+  
+  
+  //realloc
+  int *ptr,i;
+  //allocating memory for only 1 integer
+  ptr = malloc(sizeof(int));
+  ptr[0] = 1;
+  //realloc memory size to store 3 integers
+  ptr = realloc(ptr, 3 * sizeof(int));
+  ptr[1] = 2;
+  ptr[2] = 3;
+  //printing values
+  for(i = 0; i < 3; i++)
+    printf("%d\n",ptr[i]);
 }
 
 
