@@ -485,7 +485,7 @@ void test7()
 
 int main()
 {
-
+//blabla
   test1();
   printf("\nTest2a (duplication d'une structure contenant un pointeur) ---------------------------\n");
   use_memcpy = 0;
